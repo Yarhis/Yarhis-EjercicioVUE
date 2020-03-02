@@ -2,12 +2,10 @@
   <div class="main">
    <!-------------------------------------->
     <p>Hola, {{userOnSession}}</p>
-
-     <p>Crea una tarea:</p>
     
-    <label for="descripcion">Descripción de la tarea:</label>
-    <input name="descripcion" v-model="taskForm.desc" placeholder="Describa la tarea que desee">
-<button v-on:click="guardaTask" > Guardar</button>
+    <label for="descripcion">Escriba la nueva tarea:</label>
+    <input name="descripcion" v-model="newTaskDescription" placeholder="Describa la tarea que desee">
+<button v-on:click="createTask" > Guardar</button>
 
 <!-- <label for="createUser">Usuarios disponibles</label>
 <select name="userChoices" id="userChoices"  >
@@ -24,19 +22,31 @@
 </option>
 </select> -->
 
-
-
-
     <p>Lista de tareas</p>
-
-<Task v-for="(task, key) in tasks" v-bind:key="key" v-bind:task="task"></Task>
-
+<table>
+<thead>
+   <tr>
+      <th>Descripción</th>
+      <th>Fecha de creación</th>
+      <th>Usuario que crea la tarea</th>
+      <th>estado</th>
+      <th>usuario que cierra la tarea</th>
+      <th>Modificar</th>
+      <th>Eliminar</th>      
+    </tr>
+</thead>
+<tbody>
+<Task v-for="(task, key) in tasks" v-bind:key="key" v-bind:task="task" v-on:deleteTask="removeTask(key)"></Task>
+</tbody>
+</table>
 
 <!-------------------------------------->
   </div>
 </template>
 
 <script>
+ var storage = window.localStorage;     
+
 import Task from '@/components/Task.vue'
 
 export default {
@@ -45,39 +55,54 @@ export default {
   data() {
     return {
       tasks: "",
-      taskForm:{
-        desc: "",
-        create_date:new Date(),
-        create_user: this.$route.params.loguedUser,
-        state: "Iniciada", 
-        close_user:null
-      },
+      newTaskDescription: "",     
       users:null,
       userOnSession:this.$route.params.loguedUser,
       statesTasks:null
     }
 },
  mounted() {
-       var storage = window.localStorage;     
+      
     this.users = JSON.parse(storage.getItem("users"));
     this.statesTasks = JSON.parse(storage.getItem("estados"));
-     this.tasks = JSON.parse(storage.getItem("tasks"));
+    this.tasks = JSON.parse(storage.getItem("tasks"));
 
   },
   methods:{
-  guardaTask:function(){
-     var storage = window.localStorage; 
-      var tasksList= this.tasks;
-tasksList.push(this.taskForm);
-
-     storage.setItem("tasks", JSON.stringify(tasksList));
-  }
+  createTask:function(){
+    
+    
+     var newTask ={
+        desc: this.newTaskDescription,
+        create_date:new Date(),
+        create_user: this.$route.params.loguedUser,
+        state: "Iniciada", 
+        close_user:null
+      }
+      this.newTaskDescription = "";
+     this.tasks.push(newTask);
+    
+     
+  },
+  removeTask: function (key) {
+     this.tasks.splice(key,1);
+     
+    },
+    ModifyTask: function (key,task) {
+     console.log(key,task.__ob__.value.desc);
+     
+    },
+  },
+  watch:{    
+     handler:function(tasks){
+      storage.setItem("tasks", JSON.stringify(tasks));
+     
+    }
   }
 }
 </script>
 
 <style scoped>
-.form {
-  background-color: beige;
-}
+
+
 </style>

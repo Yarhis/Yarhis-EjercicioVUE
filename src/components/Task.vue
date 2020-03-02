@@ -1,12 +1,26 @@
 <template>
-  <div class="task">
-   <span v-for ="(value,key) in task " v-bind:key="key">
+   <tr>
+   <td v-for ="(value,key) in task " v-bind:key="key">
+
+    {{value}}    
+     </td>
+     <td>
+    <button>modificar</button>
+    </td>
+    <td>
+    <button  @click="$emit('deleteTask')">borrar</button>
+    </td>
+    </tr>
+<!-- <span v-for ="(value,key) in task " v-bind:key="key">
 
      {{key}} : {{value}}
-   </span>
-   
-      
-  </div>
+    
+     </span>
+    <button>modificar</button>
+    <button >borrar</button>  
+    
+    @click="removeTodo(task)"-->
+
 
 </template>
 
@@ -15,7 +29,8 @@ export default {
   name: 'Task',
   props: {
     task: Object
-  }
+  },
+  
 }
 </script>
 
