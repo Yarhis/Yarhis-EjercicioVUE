@@ -7,21 +7,7 @@
     <input name="descripcion" v-model="newTaskDescription" placeholder="Describa la tarea que desee">
 <button v-on:click="createTask" > Guardar</button>
 
-<!-- <label for="createUser">Usuarios disponibles</label>
-<select name="userChoices" id="userChoices"  >
-<option v-for="user in users" :key="user.name" >
-   {{user.name}}
-</option>
-</select>
-<br>
-
-<label for="states" >Estados</label>
-<select name="states" id="states" v-model="taskForm.state">
-  <option v-for="state in statesTasks" :key="state" >
-   {{state}}
-</option>
-</select> -->
-
+<FormTask v-if="taskToChange" v-bind:taskToModify="taskToChange" v-on:updateDataTask="modifyTask($event)"></FormTask>
     <p>Lista de tareas</p>
 <table>
 <thead>
@@ -36,7 +22,11 @@
     </tr>
 </thead>
 <tbody>
-<Task v-for="(task, key) in tasks" v-bind:key="key" v-bind:task="task" v-on:deleteTask="removeTask(key)"></Task>
+<Task v-for="(task, key) in tasks" v-bind:key="key" 
+v-bind:task="task" 
+v-on:deleteTask="removeTask(key)" 
+v-on:showForm="showForm($event)"
+></Task>
 </tbody>
 </table>
 
@@ -48,23 +38,24 @@
  var storage = window.localStorage;     
 
 import Task from '@/components/Task.vue'
+import FormTask from '@/components/FormTask.vue'
+
 
 export default {
   name: "Main",
-  components:{Task},
+  components:{Task,FormTask},
   data() {
     return {
       tasks: "",
-      newTaskDescription: "",     
-      users:null,
+      newTaskDescription: "", 
+      oldTaskDescription:"",    
       userOnSession:this.$route.params.loguedUser,
-      statesTasks:null
+      taskToChange: ""
+          
     }
 },
- mounted() {
-      
-    this.users = JSON.parse(storage.getItem("users"));
-    this.statesTasks = JSON.parse(storage.getItem("estados"));
+ mounted() {      
+   
     this.tasks = JSON.parse(storage.getItem("tasks"));
 
   },
@@ -88,9 +79,14 @@ export default {
      this.tasks.splice(key,1);
      
     },
-    ModifyTask: function (key,task) {
-     console.log(key,task.__ob__.value.desc);
-     
+  showForm:function(v){
+    this.taskToChange= v;
+    this.oldTaskDescription = v.desc;
+  },
+    //borrar funcion si funciona en task.vue
+    modifyTask: function (v2) {
+    //  console.log(key,task.__ob__.value.desc);
+     console.log(v2);
     },
   },
   watch:{    
