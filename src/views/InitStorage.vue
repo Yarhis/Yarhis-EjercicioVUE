@@ -56,9 +56,9 @@ export default {
       );
 
       var tasks = new Array(
-        {desc: "descripción de la tarea 1", create_date:new Date(), create_user: "usuario1", state: "Iniciada", close_user:null},
-        {desc: "descripción de la tarea 2", create_date:new Date(), create_user: "usuario2", state: "curso", close_user:null},
-       {desc: "descripción de la tarea 3", create_date:new Date(), create_user: "usuario3", state: "Finalizada", close_user:null},
+        {desc: "descripción de la tarea 1", create_date:new Date().toLocaleString(), create_user: "usuario1", state: "Iniciada", close_user:null},
+        {desc: "descripción de la tarea 2", create_date:new Date().toLocaleString(), create_user: "usuario2", state: "curso", close_user:null},
+       {desc: "descripción de la tarea 3", create_date:new Date().toLocaleString(), create_user: "usuario3", state: "Finalizada", close_user:null},
       );
 
       //Creación de tareas

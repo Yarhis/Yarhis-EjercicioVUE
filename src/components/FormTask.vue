@@ -72,9 +72,26 @@ export default {
   background-color: #fefefe;
   margin: auto;
 
-  border: solid 0.5em #0090c5;
+  border: solid 0.5em rgb(236, 161, 62);
   border-radius: 6px;
   padding: 2em 2em 2em 2em;
   text-align: center;
+}
+button{
+  margin-top: 15px;
+}
+select{
+    margin-top: 15px;
+  border-radius: 6px; 
+    font-weight: bold;
+    padding: 5px 5px 5px 5px;
+    text-align: center;
+}
+
+p{
+    font-weight: bold;
+font-size: 2em;
+ color: rgb(236, 161, 62);;
+
 }
 </style>

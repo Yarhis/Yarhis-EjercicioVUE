@@ -1,7 +1,7 @@
 <template>
   <div class="main">
    <!-------------------------------------->
-    <p>Hola, {{userOnSession}}</p>
+    <p>Hola, <span id="userOnSession">{{userOnSession}}</span></p>
     
     <label for="descripcion">Escriba la nueva tarea:</label>
     <input name="descripcion" v-model="newTaskDescription" placeholder="Describa la tarea que desee">
@@ -68,7 +68,7 @@ export default {
     
      var newTask ={
         desc: this.newTaskDescription,
-        create_date:new Date(),
+        create_date:new Date().toLocaleString(),
         create_user: this.userOnSession,
         state: "Iniciada", 
         close_user:null
@@ -89,7 +89,6 @@ export default {
     this.taskPosition =key;
 
   },
-    //borrar funcion si funciona en task.vue
     modifyTask: function (mt) {
       this.tasks[this.taskPosition] = mt;
       storage.setItem("tasks", JSON.stringify(this.tasks));
@@ -107,6 +106,31 @@ export default {
 </script>
 
 <style scoped>
+#userOnSession{
+ color: rgb(236, 161, 62);
+text-shadow: 2px 2px #0000009f;
+font-size: 2em;
 
+}
+
+p{
+font-size: 1.6em; 
+    color: rgb(82, 80, 80);
+
+}
+
+table{
+ margin-left: 5%;
+}
+
+th{
+     background-color:rgb(82, 80, 80);
+ border-radius: 8px;
+ padding: 10px 15px 10px 15px;
+ color: rgb(255, 255, 255);
+   font-weight: bold;
+   font-size:1.1em;
+
+}
 
 </style>
