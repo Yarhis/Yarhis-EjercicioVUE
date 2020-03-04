@@ -7,7 +7,8 @@
     <input name="descripcion" v-model="newTaskDescription" placeholder="Describa la tarea que desee">
 <button v-on:click="createTask" > Guardar</button>
 
-<FormTask v-if="taskToChange" v-bind:taskToModify="taskToChange" v-on:updateDataTask="modifyTask($event)"></FormTask>
+<FormTask v-if="formEnable" v-bind:taskToModify="taskToChange" v-on:updateDataTask="modifyTask($event)"></FormTask>
+
     <p>Lista de tareas</p>
 <table>
 <thead>
@@ -25,7 +26,7 @@
 <Task v-for="(task, key) in tasks" v-bind:key="key" 
 v-bind:task="task" 
 v-on:deleteTask="removeTask(key)" 
-v-on:showForm="showForm($event)"
+v-on:showForm="showForm(key,task)"
 ></Task>
 </tbody>
 </table>
@@ -49,15 +50,17 @@ export default {
       tasks: "",
       newTaskDescription: "", 
       oldTaskDescription:"",    
-      userOnSession:this.$route.params.loguedUser,
-      taskToChange: ""
+      userOnSession:"",
+      taskToChange: {},
+      formEnable:false,
+      taskPosition:""
           
     }
 },
- mounted() {      
+ mounted() {   
    
     this.tasks = JSON.parse(storage.getItem("tasks"));
-
+ this.userOnSession = JSON.parse(storage.getItem("userLog"));
   },
   methods:{
   createTask:function(){
@@ -66,12 +69,13 @@ export default {
      var newTask ={
         desc: this.newTaskDescription,
         create_date:new Date(),
-        create_user: this.$route.params.loguedUser,
+        create_user: this.userOnSession,
         state: "Iniciada", 
         close_user:null
       }
       this.newTaskDescription = "";
      this.tasks.push(newTask);
+     storage.setItem("tasks", JSON.stringify(this.tasks));
     
      
   },
@@ -79,22 +83,26 @@ export default {
      this.tasks.splice(key,1);
      
     },
-  showForm:function(v){
-    this.taskToChange= v;
-    this.oldTaskDescription = v.desc;
+  showForm:function(key,task){
+    this.formEnable= true;
+    this.taskToChange= task;
+    this.taskPosition =key;
+
   },
     //borrar funcion si funciona en task.vue
-    modifyTask: function (v2) {
-    //  console.log(key,task.__ob__.value.desc);
-     console.log(v2);
+    modifyTask: function (mt) {
+      this.tasks[this.taskPosition] = mt;
+      storage.setItem("tasks", JSON.stringify(this.tasks));
+
+      // this.formEnable= false;
     },
   },
-  watch:{    
-     handler:function(tasks){
-      storage.setItem("tasks", JSON.stringify(tasks));
+  // watch:{    
+  //    handler:function(tasks){
+  //     storage.setItem("tasks", JSON.stringify(tasks));
      
-    }
-  }
+  //   }
+  // }
 }
 </script>
 

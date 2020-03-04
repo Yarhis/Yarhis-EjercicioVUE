@@ -1,12 +1,11 @@
 <template>
-  <form class="modal">
+  <form class="modal" >
     <div class="modal-content">
       <p>MODIFICAR TAREA</p>
       <label for="descripcion">Modifica la descripción de la tarea:</label>
       <input
         type="text"
-        name="descripcion"
-        :placeholder="taskToModify.desc"
+        name="descripcion"        
         v-model="newTaskForm.desc"
       />
       <br />
@@ -22,7 +21,7 @@
           <option v-for="user in users" :key="user.name">{{user.name}}</option>
         </select>
       </div>
-      <button v-on:click="update()">Cambiar</button>
+      <button v-on:click="update">Cambiar</button>
     </div>
   </form>
 </template>
@@ -36,43 +35,21 @@ export default {
   data() {
     return {
       newTaskForm: {
-        desc: "",
+        desc: this.taskToModify.desc,
         create_date:this.taskToModify.create_date,
-        create_user:this.taskToModify.create_user,
+        create_user:this.taskToModify.create_user,       
         state: "",
         close_user: "",
-
       },
-      users: "",
-      statesTasks: ""
+      users: JSON.parse(window.localStorage.getItem("users")),
+      statesTasks: JSON.parse(window.localStorage.getItem("estados"))
     };
   },
   methods: {
-    update: function() {
-      var storage = window.localStorage;
-      var storageTasks = JSON.parse(storage.getItem("tasks"));
-
-      storageTasks.forEach(task => {
-        if (this.taskToModify.desc == task.desc) {
-          var index= storageTasks.indexOf(task)
-          
-          storageTasks[index] = this.newTaskForm
-
-        }
-      });
-
-      // console.log(storageTasks);
-      storage.setItem("tasks", JSON.stringify(storageTasks));
-     this.$emit('updateDataTask')
-    }
-  },
-  mounted() {
-    var storage = window.localStorage;
-
-    this.users = JSON.parse(storage.getItem("users"));
-    this.statesTasks = JSON.parse(storage.getItem("estados"));
-  }
-};
+   update:function(){
+      this.$emit('updateDataTask',this.newTaskForm)
+   }
+}};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

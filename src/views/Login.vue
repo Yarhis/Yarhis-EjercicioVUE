@@ -38,7 +38,6 @@ export default {
      console.log(this.username);
       var storage = window.localStorage;
       var users = JSON.parse(storage.getItem("users"));
-      var loguedUser;
       var loginOK = false;
       this.error ="";
 
@@ -47,15 +46,19 @@ export default {
           if (this.password == user.password) {
             loginOK = true;
             //si usuario y contraseña coinciden guardo ese usuario
-           loguedUser=user.name
+           storage.setItem("userLog", JSON.stringify(user.name));
           }
         }
       });
 
         if (loginOK) {
           console.log("Usuario logueado correctamente");
+            
+           
+
+
           this.error="";
-          this.$router.push({name:'Main',params:{loguedUser}});
+          this.$router.push({name:'Main'});
         } else {
           console.log("Usuario o contraseña no válidos");
           this.error = "Usuario o contraseña no válidos";

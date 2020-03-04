@@ -1,8 +1,8 @@
 <template>
-    <div>
+    
         <span>{{formatdatetime}}</span>
 
-    </div>
+   
 </template>
 
 <script>

@@ -1,70 +1,53 @@
 <template>
-   <!--<tr>
-    <td v-for ="(value,key) in task " v-bind:key="key">
-
-    {{value}}    
-     </td>
-     <td>
-    <button v-on:click="modifyTask">modificar</button>
+  <tr>
+    <td>{{task.desc}}</td>
+    <td><Timestamp v-bind:datetime="task.create_date"></Timestamp></td>
+    <td>{{task.create_user}}</td>
+    <td>{{task.state}}</td>
+    <td>{{task.close_user}}</td>
+    <td>
+      <button v-on:click="$emit('showForm')">modificar</button>
     </td>
     <td>
-    <button  v-on:click="$emit('deleteTask')">borrar</button>
+      <button v-on:click="$emit('deleteTask')">borrar</button>
     </td>
-    </tr> -->
+  </tr>
 
-    <tr>
-   <td v-for ="(value,key) in newTask " v-bind:key="key">
-
-    {{value}}    
-     </td>
-     <td>
-    <button v-on:click="$emit('showForm',newTask)">modificar</button>
+   <!-- <tr>
+    <td v-for="(value,key) in task " v-bind:key="key">{{value}}</td>
+    <td>
+      <button v-on:click="$emit('showForm')">modificar</button>
     </td>
     <td>
-    <button  v-on:click="$emit('deleteTask')">borrar</button>
+      <button v-on:click="$emit('deleteTask')">borrar</button>
     </td>
-    </tr>
-
-
-    
+  </tr> -->
 </template>
 
 <script>
 
-// import FormTask from '@/components/FormTask.vue'
+import Timestamp from '@/components/Timestamp.vue'
 
-  
 export default {
-  name: 'Task',
+  name: "Task",
+  components:{Timestamp},
   props: {
     task: Object
   },
-  // components:{FormTask},
-data() {
+  data() {
     return {
-    newTask:"",
-    // enabledForm: false
-    }},
-    methods: {
-      modifyTask:function(){
-        this.newTask= {
-        desc: "prueba de cambio", 
-        create_date:new Date(), 
-        create_user: "usuario69", 
-        state: "lalalalallaal", 
-        close_user:null}
-
-        
-      }     
-    }, 
-    mounted() {
-      this.newTask = this.task
-    }
-}
+      newTask: ""
+    };
+  },
+  methods: {
+    // }
+  },
+  mounted() {
+    // this.newTask = this.task
+  }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-
 </style>
